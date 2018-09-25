@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:background="@color/colorAccent">
+
+    <group >
+        <item
+
+            android:id="@+id/book_sell"
+            android:title="Sell Book" />
+        <item
+            android:id="@+id/book_buy"
+            android:title="Buy book" />
+
+
+    </group>
+    <group>
+        <item
+
+            android:id="@+id/events"
+            android:title="events" />
+
+    </group>
+    <group>
+        <item
+            android:id="@+id/feedback_provide"
+            android:title="provide feedback" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/logout_menu"
+            android:title="Logout" />
+    </group>
+</menu>

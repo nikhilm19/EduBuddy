@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "357177077498",
+    "firebase_url": "https://edubuddy-31b44.firebaseio.com",
+    "project_id": "edubuddy-31b44",
+    "storage_bucket": "edubuddy-31b44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357177077498:android:df1e3f4a4aefb3fb",
+        "android_client_info": {
+          "package_name": "com.example.nikmul19.edubuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "357177077498-oeo7fv3geqb96sf9bub460aa0et1nn77.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nikmul19.edubuddy",
+            "certificate_hash": "e056ccf7a9c2cd21e186ffae0ec123670bc8c062"
+          }
+        },
+        {
+          "client_id": "357177077498-rlf8cv1kfqe2bi04kh25otelh17m46d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeAPRkz_z0_dY-oI08Nl3DmFo1Ltf4ifU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "357177077498-rlf8cv1kfqe2bi04kh25otelh17m46d3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
