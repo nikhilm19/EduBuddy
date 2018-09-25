@@ -143,22 +143,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         public void signIn(final String email, final String password){
             cUser=cAuth.getCurrentUser();
-            String domain= email.substring(email.indexOf("@")+1);
+            final String domain= email.substring(email.indexOf("@")+1);
 
-            if(!domain.contains(".")){
+            if(!domain.contains(".") || password.length()==0){
                 Toast toast = Toast.makeText(getActivity(), "Fill proper Credentials", Toast.LENGTH_LONG);
                 toast.show();
             }
 
-
-
-            //showProgressBar();
+            if(!cUser.isEmailVerified()){
+                Toast toast = Toast.makeText(getActivity(), "PLEASE VERIFY EMAIL", Toast.LENGTH_LONG);
+                toast.show();
+            }
             cAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
 
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     final String error;
                     if (task.isSuccessful()){
+                        if(domain.compareTo("scet.ac.in")==0)
+                        {
+                            //todo admin login
+
+                        }
+                        errorText.setVisibility(View.GONE);
                         MainIntent(email);
                         System.out.print("succesful");
                     }
@@ -248,6 +255,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             intent.putExtras(bundle);
             getActivity().finish();
             startActivity(intent);
+        }
+        public void AdminIntent(String email){
+
+            //todo admin intent
+            Bundle bundle= new Bundle();
+            Intent intent= new Intent(getActivity(),DrawerActivity.class);
+            bundle.putString("user_id",email);
+            intent.putExtras(bundle);
+            getActivity().finish();
+            startActivity(intent);
+
         }
     }
 

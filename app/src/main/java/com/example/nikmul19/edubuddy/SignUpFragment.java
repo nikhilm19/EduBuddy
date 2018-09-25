@@ -155,7 +155,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     }
     public void writeNewUser(String UserId, StudentSignUpData student){
-        db.child("users/"+UserId).setValue(student);
+        db.child("users/Students/"+UserId).setValue(student);
     }
     public void signIn(final String email, final String password){
 
