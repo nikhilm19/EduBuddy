@@ -24,12 +24,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.*;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment implements View.OnClickListener,RadioGroup.OnCheckedChangeListener{
+public class LoginFragment extends Fragment implements View.OnClickListener{
 
 
     public LoginFragment() {
@@ -44,7 +45,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Radi
         private FirebaseUser cUser;
         private DatabaseReference db;
         public EditText email,password,enroll;
-        private TextView signUp;
+        private TextView signUp,errorText;
         private ProgressBar progressBar;
         private Button signInButton,signOutButton;
         private String uId;
@@ -67,15 +68,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Radi
 
         }
 
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-            switch (checkedId){
-                case R.id.year1_radio_btn:
-                    Log.i("test","1");
-            }
-
-        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,6 +99,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Radi
         }*/
         public void findViews(){
             db= FirebaseDatabase.getInstance().getReference();
+            errorText=view.findViewById(R.id.errorText);
             signInButton=view.findViewById(R.id.sign_in_button);
             // emailVerifyButton=view.findViewById(R.id.verify_button);
             cAuth=FirebaseAuth.getInstance();
@@ -116,10 +109,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Radi
             progressBar=view.findViewById(R.id.progressBar);
             progressBar.setVisibility(View.INVISIBLE);
             signInButton.setOnClickListener(this);
-            signUp=view.findViewById(R.id.sign_up);
-            signUp.setOnClickListener(this);
-            // emailVerifyButton.setOnClickListener(this);
-            //createButton.setOnClickListener(this);
 
 
         }
@@ -154,15 +143,49 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Radi
 
         public void signIn(final String email, final String password){
             cUser=cAuth.getCurrentUser();
+            String domain= email.substring(email.indexOf("@")+1);
+
+            if(!domain.contains(".")){
+                Toast toast = Toast.makeText(getActivity(), "Fill proper Credentials", Toast.LENGTH_LONG);
+                toast.show();
+            }
+
+
+
             //showProgressBar();
             cAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
+
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    final String error;
                     if (task.isSuccessful()){
                         MainIntent(email);
                         System.out.print("succesful");
                     }
                     else{
+
+                        try {
+                            errorText.setVisibility(View.VISIBLE);
+                            throw task.getException();
+
+                        } catch(FirebaseAuthWeakPasswordException e) {
+
+                            errorText.setText("Weak Password");
+                           LoginFragment.this.password.requestFocus();
+                            Log.e("errror", e.getMessage());
+
+                        } catch(FirebaseAuthInvalidCredentialsException e) {
+                            LoginFragment.this.password.requestFocus();
+                            errorText.setText("Invalid Credentials");
+                            Log.e("errror", e.getMessage());
+
+                        } catch(FirebaseAuthUserCollisionException e) {
+                            LoginFragment.this.password.requestFocus();
+                            errorText.setText("User Already Exists");
+                            Log.e("errror", e.getMessage());
+                        } catch(Exception e) {
+                            Log.e("errror", e.getMessage());
+                        }
                         Log.e("eror", "onComplete: Failed=" + task.getException().getMessage());
                         System.out.print("UNsuccesful");
 
@@ -201,9 +224,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Radi
                 case R.id.sign_in_button:
 
                     showProgressBar();
-
-
-
                     //Log.i("test",email+" "+password);
 
                     signIn(email.getText().toString(),password.getText().toString());

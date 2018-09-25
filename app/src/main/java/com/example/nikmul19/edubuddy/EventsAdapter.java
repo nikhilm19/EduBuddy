@@ -45,7 +45,7 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.MyViewHol
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
             final Events event = eventsList.get(position);
-            holder.email.setText(event.getEmail());
+          /*  holder.email.setText(event.getEmail());
             holder.enroll.setText(event.getEnroll());
             if(holder.absent.isChecked())event.setAbsent(true);
             holder.absent.setChecked(event.isAbsent());
@@ -55,7 +55,7 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.MyViewHol
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     event.setAbsent(isChecked);
                 }
-            });
+            });*/
 
 
         }

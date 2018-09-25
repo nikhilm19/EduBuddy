@@ -25,7 +25,7 @@
 
         <EditText
             android:id="@+id/email_id_1"
-            android:layout_width="346dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -54,6 +54,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="197dp" />
+
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="0"
+
+            android:textColor="@android:color/holo_red_light"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="match_parent"
