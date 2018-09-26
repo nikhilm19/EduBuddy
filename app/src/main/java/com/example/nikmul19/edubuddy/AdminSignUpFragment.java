@@ -38,7 +38,6 @@ import java.util.zip.Inflater;
  */
 public class AdminSignUpFragment extends Fragment implements View.OnClickListener {
 
-
     public AdminSignUpFragment() {
         // Required empty public constructor
     }

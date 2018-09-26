@@ -106,6 +106,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             email=((EditText)view.findViewById(R.id.email_id_1));
             password=((EditText)view.findViewById(R.id.password));
             //createButton=view.findViewById(R.id.create_account);
+            signUp=view.findViewById(R.id.sign_up);
+            signUp.setOnClickListener(this);
             progressBar=view.findViewById(R.id.progressBar);
             progressBar.setVisibility(View.INVISIBLE);
             signInButton.setOnClickListener(this);
@@ -150,7 +152,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 toast.show();
             }
 
-            if(!cUser.isEmailVerified()){
+            if(cUser!=null && !cUser.isEmailVerified()){
                 Toast toast = Toast.makeText(getActivity(), "PLEASE VERIFY EMAIL", Toast.LENGTH_LONG);
                 toast.show();
             }
@@ -240,6 +242,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
                 case R.id.sign_up:
                     System.out.println("clicked");
+                    Log.d("test","clicked");
                     SignUpFragment fragment= new SignUpFragment();
                     FragmentManager fragmentManager= getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.Constraint_Layout,fragment,null).addToBackStack(null).commit();

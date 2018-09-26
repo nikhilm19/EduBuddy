@@ -146,6 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="17dp"
             android:layout_weight="1"
+            android:clickable="true"
             android:text="Create Account" />
 
         <Button

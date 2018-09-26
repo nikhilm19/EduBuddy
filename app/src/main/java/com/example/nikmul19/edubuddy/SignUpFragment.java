@@ -148,6 +148,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
 
                 }
+                else{
+                    System.out.println("Unsuccesful create");
+                }
 
             }
 
@@ -155,7 +158,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     }
     public void writeNewUser(String UserId, StudentSignUpData student){
-        db.child("users/Students/"+UserId).setValue(student);
+
+        System.out.print("created new user");
+        db.child("/users/"+UserId).setValue(student);
     }
     public void signIn(final String email, final String password){
 
@@ -226,9 +231,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         int id=v.getId();
         switch (id) {
             case R.id.create_account:
-                Log.i("test",email+" "+password);
+                Log.i("test",email.getText().toString()+" "+password.getText().toString());
                 createAccount(email.getText().toString(),password.getText().toString(),enroll.getText().toString());
-
                 break;
 
             case R.id.Sign_in:
@@ -240,14 +244,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 AdminSignUpFragment fragment= new AdminSignUpFragment();
                 FragmentManager fragmentManager= getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.Constraint_Layout,fragment,"null").addToBackStack(null).commit();
-
-
                 break;
-
-
-
         }
-
 
     }
 
@@ -262,7 +260,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     public void MainIntent(String email){
         Bundle bundle= new Bundle();
         Intent intent= new Intent(getActivity(),DrawerActivity.class);
-
         bundle.putString("user_id",email);
         intent.putExtras(bundle);
         getActivity().finish();
