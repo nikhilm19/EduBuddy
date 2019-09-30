@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7dacbcf9"
     tools:context=".LoginSignUpContainer"
     tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="368dp"
-        android:layout_height="357dp"
+        android:layout_height="432dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:background="@drawable/border"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +30,8 @@
             android:layout_weight="1"
             android:autoText="true"
             android:clickable="true"
-            android:text="Admin user?" />
+            android:text="Admin user?"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/student_name"
@@ -38,8 +41,8 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Name" />
+            android:hint="Name"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/email_id_1"
@@ -95,14 +98,22 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Phone No."
-            android:inputType="textPersonName" />
+            android:inputType="text|textPersonName|phone" />
 
         <RadioGroup
             android:id="@+id/year_radio_grp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/year_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Year" />
 
             <RadioButton
                 android:id="@+id/year1_radio_btn"
@@ -141,11 +152,23 @@
 
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textColor="?attr/colorError"
+            android:visibility="invisible" />
+
         <Button
             android:id="@+id/create_account"
             android:layout_width="match_parent"
             android:layout_height="17dp"
+            android:layout_margin="8dp"
             android:layout_weight="1"
+            android:background="@drawable/border2"
             android:clickable="true"
             android:text="Create Account" />
 
@@ -163,16 +186,13 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
         android:indeterminate="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.518"
         tools:visibility="invisible" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

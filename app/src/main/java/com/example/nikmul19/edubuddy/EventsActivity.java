@@ -1,7 +1,8 @@
 package com.example.nikmul19.edubuddy;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class EventsActivity extends AppCompatActivity {
 

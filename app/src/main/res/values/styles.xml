@@ -13,7 +13,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:actionMenuTextColor">@color/actionBarText</item>
+        <item name="actionMenuTextColor">@color/actionBarText</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 

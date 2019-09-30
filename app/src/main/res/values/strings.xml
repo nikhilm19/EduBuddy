@@ -86,4 +86,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="subjects">
+        <item>Java</item>
+        <item>AAD</item>
+        <item>CS</item>
+        <item> SP</item>
+        <item>MI</item>
+        <item>CN</item>
+        <item>MCWC</item>
+    </string-array>
 </resources>

@@ -3,11 +3,10 @@ package com.example.nikmul19.edubuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +18,24 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 
 /**
@@ -43,8 +53,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference db;
     public EditText email,password,enroll,name,phoneNo;
 
-    private TextView status,isAdmin;
-    private ProgressBar progressBar;
+    private TextView status, isAdmin, errorText;
+    private ProgressBar signProgress;
     private Button createButton,signInButton;
     private String uId,sYear;
     private View view;
@@ -65,6 +75,21 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }*/
         return  view;
     }
+
+    public void showProgress() {
+
+        Log.i("test1", "shown");
+        signProgress.setVisibility(View.VISIBLE);
+        signProgress.setIndeterminate(true);
+
+    }
+
+    public void hideProgress() {
+        Log.i("test1", "hidden");
+        signProgress.setVisibility(View.INVISIBLE);
+        signProgress.setIndeterminate(false);
+    }
+
     public void findViews(){
 
         db= FirebaseDatabase.getInstance().getReference();
@@ -82,9 +107,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         signInButton=view.findViewById(R.id.Sign_in);
         signInButton.setOnClickListener(this);
         phoneNo=view.findViewById(R.id.phone_no);
-        progressBar=view.findViewById(R.id.progressBar);
+        signProgress = view.findViewById(R.id.progressBar);
+        errorText = view.findViewById(R.id.error_text);
 
-        progressBar.setVisibility(View.INVISIBLE);
+        signProgress.setVisibility(View.INVISIBLE);
         createButton.setOnClickListener(this);
         year=view.findViewById(R.id.year_radio_grp);
         year.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -119,68 +145,129 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     public void createAccount(final String email, String password, final String enroll){
 
 
+        final String name = this.name.getText().toString();
+        final String phone = this.phoneNo.getText().toString();
+        errorText.setVisibility(View.INVISIBLE);
+        boolean error = false;
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getActivity(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            error = true;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(getActivity(), "Enter valid email address!", Toast.LENGTH_SHORT).show();
+            error = true;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getActivity(), "Enter password!", Toast.LENGTH_SHORT).show();
+            error = true;
+        }
 
 
+        if (password.length() < 6) {
+            Toast.makeText(getActivity(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+            error = true;
+        }
+        if (!Patterns.PHONE.matcher(phone).matches()) {
+            Toast.makeText(getActivity(), "Enter valid Phone number!", Toast.LENGTH_SHORT).show();
+            error = true;
+        }
+        if (error) hideProgress();
+
+        if (!error) {
+            final String enrollment = this.enroll.getText().toString();
+            final String shift = (this.shift.isChecked()) ? "Evening" : "Morning";
+            final StudentSignUpData student = new StudentSignUpData(email, enrollment, sYear, name, shift, phone);
 
 
+            cAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    View view1 = view.findViewById(R.id.Constraint_layout);
+                    if (task.isSuccessful()) {
+                        System.out.print("created");
+                        Snackbar snackbar = Snackbar.make(view, "Successful Sign in", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                        cUser = cAuth.getCurrentUser();
+                        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                        cUser.updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.i("test", "Set display name successfully");
+                                }
+                            }
+                        });
+                        createButton.setVisibility(View.GONE);
+                        signInButton.setVisibility(View.VISIBLE);
+                        uId = cUser.getUid();
 
-        cAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                View view1=view.findViewById(R.id.Constraint_layout);
-                if (task.isSuccessful()){
-                    //todo add student
 
+                        writeNewUser(uId, student);
+                        verifyEmail();
+                    } else {
 
-                    System.out.print("created");
-                    Snackbar snackbar= Snackbar.make(view,"Successful Sign in",Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                    cUser = cAuth.getCurrentUser();
-                    createButton.setVisibility(View.GONE);
-                    signInButton.setVisibility(View.VISIBLE);
+                        try {
+                            errorText.setVisibility(View.VISIBLE);
+                            throw task.getException();
 
-                    //status.setText("Signed In");
-                    // emailVerifyButton.setVisibility(View.GONE);
-                    verifyEmail();
+                        } catch (FirebaseAuthWeakPasswordException e) {
 
+                            errorText.setText("Weak Password");
+                            Log.e("errror", e.getMessage());
 
+                        } catch (FirebaseAuthInvalidCredentialsException e) {
+                            errorText.setText("Invalid Credentials");
+                            Log.e("errror", e.getMessage());
 
+                        } catch (FirebaseAuthUserCollisionException e) {
+                            errorText.setText("User Already Exists");
+                            Log.e("errror", e.getMessage());
+                        } catch (Exception e) {
+                            Log.e("errror", e.getMessage());
+                        }
+                        Log.e("eror", "onComplete: Failed=" + task.getException().getMessage());
+                        System.out.print("UNsuccesful");
+                    }
 
 
                 }
-                else{
-                    System.out.println("Unsuccesful create");
-                }
 
-            }
+            });
+        }
 
-        });
+
+        hideProgress();
 
     }
     public void writeNewUser(String UserId, StudentSignUpData student){
 
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (task.isSuccessful()) {
+                    String token = task.getResult().getToken();
+                    db.child("/users/Students/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/Fcm_Token").setValue(token);
+                }
+
+            }
+        });
+
         System.out.print("created new user");
-        db.child("/users/"+UserId).setValue(student);
+        db.child("/users/Students/" + UserId).setValue(student);
     }
     public void signIn(final String email, final String password){
 
-        final String enrollment=this.enroll.getText().toString();
-        final String name=this.name.getText().toString();
-        final String shift=(this.shift.isChecked())?"Evening":"Morning";
-        final String phone=this.phoneNo.getText().toString();
-        final StudentSignUpData student= new StudentSignUpData(email,enrollment,sYear,name,shift,phone);
+        cUser = cAuth.getCurrentUser();
 
-        cUser=cAuth.getCurrentUser();
-
-        if(cUser!=null &&  !cUser.isEmailVerified()){
-            Toast toast=Toast.makeText(getActivity(),"cant sign in. please verify email"+cUser.getEmail()
-                    ,Toast.LENGTH_LONG);
+        if (cUser != null && !cUser.isEmailVerified()) {
+            Toast toast = Toast.makeText(getActivity(), "Please verify email " + cUser.getEmail()
+                    , Toast.LENGTH_LONG);
             toast.show();
             cUser.reload();
-        }
-        else {
-            //showProgressBar();
-
+        } else {
             cAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                 View view1 = view.findViewById(R.id.Constraint_layout);
 
@@ -192,8 +279,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
                         //status.setText("Signed in");
                         Log.i("test", "signed in");
-                        uId=cUser.getUid();
-                        writeNewUser(uId,student);
+
                         MainIntent(email);
 
                     } else {
@@ -204,6 +290,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             });
             //hideProgressBar();
         }
+
     }
     public void verifyEmail(){
 
@@ -228,9 +315,24 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v)
     {
 
+
         int id=v.getId();
+        final Handler handler = new Handler();
         switch (id) {
             case R.id.create_account:
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showProgress();
+                            }
+                        });
+                    }
+                });
+                showProgress();
                 Log.i("test",email.getText().toString()+" "+password.getText().toString());
                 createAccount(email.getText().toString(),password.getText().toString(),enroll.getText().toString());
                 break;
@@ -246,6 +348,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 fragmentManager.beginTransaction().replace(R.id.Constraint_Layout,fragment,"null").addToBackStack(null).commit();
                 break;
         }
+        hideProgress();
 
     }
 

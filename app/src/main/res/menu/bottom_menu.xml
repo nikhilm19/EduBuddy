@@ -5,21 +5,23 @@
 
     android:background="@color/colorAccent">
 
-    <group >
-        <item
+    <item
 
-            android:id="@+id/book_sell"
-            android:title="Sell Book" />
-        <item
-            android:id="@+id/book_buy"
-            android:title="Buy book" />
+        android:id="@+id/book_sell"
+        android:icon="@android:drawable/btn_dialog"
+        android:title="Sell Book" />
+    <item
+        android:id="@+id/book_buy"
+        android:icon="@android:drawable/alert_light_frame"
+        android:title="Buy book" />
 
 
-    </group>
     <group>
         <item
             android:id="@+id/logout_menu"
-            android:title="Logout" />
+            android:title="Logout"
+
+            />
     </group>
 
 </menu>
