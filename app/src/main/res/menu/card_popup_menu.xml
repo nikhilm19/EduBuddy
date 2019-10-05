@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/notify_seller"
+            android:icon="@drawable/baseline_notifications_none_black_18dp"
+            android:title="Notify Seller" />
+        <item
+            android:id="@+id/call_seller"
+            android:icon="@drawable/baseline_call_black_18dp"
+            android:title="Call Seller" />
+
+
+        <item
+            android:id="@+id/bidding_seller"
+            android:icon="@drawable/baseline_add_shopping_cart_black_18dp"
+            android:title="Bid Seller" />
+    </group>
+
+
+</menu>
