@@ -376,7 +376,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
 class StudentSignUpData{
 
-    String email_id,enroll,name,phone,year,shift;
+   public String email_id,enroll,name,phone,year,shift;
 
     StudentSignUpData(String email_id,String enroll,String year,String name,String shift,String phone ){
         this.shift=shift;

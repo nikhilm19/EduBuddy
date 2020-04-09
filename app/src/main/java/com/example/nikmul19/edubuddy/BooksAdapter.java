@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -22,8 +23,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,7 +57,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder  implements  View.OnClickListener{
 
         public TextView title, price, seller, email;
         public ImageView bookImage, popupDots;
@@ -63,6 +65,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         public MyViewHolder(View view) {
 
             super(view);
+            context = view.getContext();
             title = view.findViewById(R.id.buy_book_title);
             price = view.findViewById(R.id.buy_book_price);
             seller = view.findViewById(R.id.buy_book_seller);
@@ -80,6 +83,14 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
 
 
         }
+        @Override
+        public void onClick(View v) {
+
+            Intent intent = new Intent(context,BookDetailsPage.class);
+            context.startActivity(intent);
+            Toast.makeText(context,"Hello",Toast.LENGTH_LONG).show();
+
+           }
     }
 
     @Override
@@ -128,18 +139,61 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
 
         final int SIZE = 20 * 1024 * 1024;
 
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("photos/" + book.getPhotoLocation());
+        final StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("photos/" + book.getPhotoLocation());
 
-        /*storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(context).load(uri.toString()).into(holder.bookImage);
-            }
-        });*/
+
         Glide.with(context).load(storageReference).into(holder.bookImage);
 
 
+
+
         Log.d("imageUrl", "photos/" + book.getPhotoLocation());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(view.getContext(), BookDetailsPage.class);
+
+                final Bundle bundle =  new Bundle();
+                bundle.putString("title",book.getTitle());
+                bundle.putString("price",book.getPrice());
+                bundle.putString("seller",holder.seller.getText().toString());
+                bundle.putString("email",holder.email.getText().toString());
+                //String url = storageReference.getDownloadUrl().toString();
+                bundle.putString("image-url",storageReference.toString());
+                bundle.putString("photo-location",book.getPhotoLocation());
+
+                bundle.putString("uploaded-by",book.getUploadedBy());
+                intent.putExtras(bundle);
+                Log.i("photo-location",book.getPhotoLocation());
+
+
+
+
+                context.startActivity(intent);
+
+               /* storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                {
+                    @Override
+                    public void onSuccess(Uri downloadUrl)
+                    {
+
+                        Log.i("image-url",downloadUrl.toString());
+                        bundle.putString("image-url",downloadUrl.toString());
+
+
+                        // bundle.putString("image-url",url);
+                        intent.putExtras(bundle);
+
+
+                        context.startActivity(intent);
+                    }
+                });*/
+
+
+            }
+        });
+
 
 
     }
@@ -147,17 +201,26 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     public void showPopUpMenu(View view, final Book book, final Context c) {
         final String receiver1 = new String();
         db = FirebaseDatabase.getInstance().getReference().child("users/Students").child(book.getUploadedBy()).child("Fcm_Token");
+        FragmentManager fragmentManager;
 
         PopupMenu popupMenu = new PopupMenu(context, view);
         MenuInflater inflater = new MenuInflater(context);
         inflater.inflate(R.menu.card_popup_menu, popupMenu.getMenu());
         popupMenu.show();
+
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.notify_seller:
                         testNoti(" wants to buy your book " + book.getTitle(), book);
+
+
+
+                       // fragmentManager.beginTransaction().replace(R.id.drawer_fragments_container, new HomeFragment(), null).commit();
+
+
+
                         return true;
 
                     case R.id.call_seller:
@@ -185,12 +248,13 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
 
                     case R.id.bidding_seller:
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(c);
-                        alertDialog.setTitle("PASSWORD");
-                        alertDialog.setMessage("Enter Password");
+                        alertDialog.setTitle("Bid");
+                        alertDialog.setMessage("Enter your bid amount");
 
                         final EditText input = new EditText(c);
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
+
                                 LinearLayout.LayoutParams.MATCH_PARENT);
                         input.setLayoutParams(lp);
                         alertDialog.setView(input);
@@ -199,7 +263,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         String bidding_count = input.getText().toString();
-                                        testNoti(" wants to buy your book " + bidding_count, book);
+                                        testNoti(" wants to buy your book for Rs " + bidding_count, book);
                                         //Toast.makeText(c, "Make bid of " + bidding_count, Toast.LENGTH_SHORT).show();
 
                                     }

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#55b2df</color>
+    <color name="colorPrimary">#4A148C</color>
     <color name="colorPrimaryDark">#0288d1</color>
     <color name="colorAccent">#ec1472</color>
     <color name="actionBarText">#ffa000</color>
+
+    <color name="actionBarColor">#4A148C</color>
 
     <color name="bgBottomNavigation">#fe485a</color>
 

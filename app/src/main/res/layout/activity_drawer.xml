@@ -10,13 +10,13 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark">
+        android:background="@android:color/white">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/actionBarColor"
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:layout_scrollFlags="scroll|enterAlways" />
@@ -25,12 +25,18 @@
             android:id="@+id/search_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-
             android:layout_margin="4dp"
-            android:background="@drawable/border"
-            android:elevation="4dp"
-            android:visibility="gone"
+
+
+            android:background="@drawable/elevation_rectangle"
             android:clickable="true"
+            android:elevation="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+
+            android:visibility="gone"
+            app:defaultQueryHint="Search Books"
+            app:queryBackground="@android:color/white"
             app:queryHint="Search Books">
 
         </androidx.appcompat.widget.SearchView>
