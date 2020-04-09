@@ -19,7 +19,7 @@ Edubuddy lets you:
 - Send notifications to the seller/buyer
 - Bid your purchase price
 
-### ✨ [Demo](https://drive.google.com/open?id=1RqKwJ-rMVO0js5TlFMXjxjkNmJweYoi4)
+### ✨ [Demo](https://drive.google.com/u/0/uc?id=1RqKwJ-rMVO0js5TlFMXjxjkNmJweYoi4&export=download)
 
 
 

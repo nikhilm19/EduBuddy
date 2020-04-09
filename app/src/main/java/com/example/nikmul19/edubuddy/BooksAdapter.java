@@ -158,12 +158,14 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
                 bundle.putString("title",book.getTitle());
                 bundle.putString("price",book.getPrice());
                 bundle.putString("seller",holder.seller.getText().toString());
+                bundle.putString("description",book.getDescription());
                 bundle.putString("email",holder.email.getText().toString());
                 //String url = storageReference.getDownloadUrl().toString();
                 bundle.putString("image-url",storageReference.toString());
                 bundle.putString("photo-location",book.getPhotoLocation());
 
                 bundle.putString("uploaded-by",book.getUploadedBy());
+                bundle.putString("tags",book.getTags().toString());
                 intent.putExtras(bundle);
                 Log.i("photo-location",book.getPhotoLocation());
 

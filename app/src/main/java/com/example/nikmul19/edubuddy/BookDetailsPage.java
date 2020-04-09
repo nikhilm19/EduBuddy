@@ -13,9 +13,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +30,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,13 +43,18 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Arrays;
+import java.util.List;
+
 import jp.wasabeef.glide.transformations.BlurTransformation;
-import jp.wasabeef.glide.transformations.BitmapTransformation;
 
 public class BookDetailsPage extends AppCompatActivity {
 
     BottomNavigationView bottomNavigation;
     String uploadedBy ;
+    TextView bookDescription;
+    ChipGroup tagChipGroup;
+    Bundle bundle;
 
 
 
@@ -55,13 +64,17 @@ public class BookDetailsPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details_page);
 
+
+
         Intent intent = getIntent();
-        final Bundle bundle = intent.getExtras();
+        bundle = intent.getExtras();
 
         TextView buyBookSeller =  findViewById(R.id.buy_book_seller);
         TextView buyBookPrice =  findViewById(R.id.buy_book_price);
         TextView buyBookTitle =  findViewById(R.id.buy_book_title);
         bottomNavigation = findViewById(R.id.bottom_navigation);
+
+        bookDescription = findViewById(R.id.book_description_details);
 
 
 
@@ -80,6 +93,9 @@ public class BookDetailsPage extends AppCompatActivity {
 
         uploadedBy = bundle.getString("uploaded-by");
 
+        tagChipGroup = findViewById(R.id.tag_chip_group);
+
+
 
 
 
@@ -93,7 +109,9 @@ public class BookDetailsPage extends AppCompatActivity {
 
         final CardView bookCard = findViewById(R.id.book_card);
 
-        final TextView bookDesc = findViewById(R.id.book_description);
+        final TextView bookDesc = findViewById(R.id.book_description_details);
+
+        bookDesc.setText(bundle.getString("description"));
         bookDesc.setMovementMethod(new ScrollingMovementMethod());
 
         final Button readMore= findViewById(R.id.read_more);
@@ -145,6 +163,8 @@ public class BookDetailsPage extends AppCompatActivity {
                 //.apply(new RequestOptions().override(100, 100))
                 .load(storageReference)
                 .into(bookPrevImage);
+
+        addTagChips();
 
 
 
@@ -231,6 +251,38 @@ public class BookDetailsPage extends AppCompatActivity {
 
 
 
+    }
+
+
+
+    public void addTagChips() {
+
+
+        String tagsString = bundle.getString("tags");
+        List<String> tagList = Arrays.asList(tagsString.substring(1,tagsString.length()-1).split(","));
+
+
+
+
+        for (String tag :
+                tagList) {
+            Chip mChip = (Chip) this.getLayoutInflater().inflate(R.layout.tag_chip_layout, null, false);
+            mChip.setText(tag);
+
+
+           /* int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,1 ,
+                    getResources().getDisplayMetrics()
+            );
+            mChip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp);*/
+            mChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                }
+            });
+            tagChipGroup.addView(mChip);
+        }
     }
     private void testNoti(final String str, String uploadedBy) {
 

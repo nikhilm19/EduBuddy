@@ -5,46 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
-    android:background="@drawable/border2"
+    android:background="@drawable/shadow_corner"
     tools:context=".SellBookFragment">
 
-    <Button
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/book_picture_btn"
-        android:layout_width="51dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="76dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@android:drawable/ic_menu_camera"
+        android:layout_marginStart="304dp"
+        android:layout_marginBottom="20dp"
         android:clickable="true"
+        android:src="@drawable/baseline_photo_camera_white_36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/book_subject"
         android:layout_width="240dp"
         android:layout_height="27dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="128dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.842"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/subject"
-        android:layout_width="111dp"
-        android:layout_height="28dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="6dp"
+        android:layout_width="123dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
+        android:paddingLeft="2dp"
         android:text="Subject"
         app:layout_constraintEnd_toStartOf="@+id/book_subject"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.105"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,10 +53,11 @@
         android:id="@+id/book_price"
         android:layout_width="0dp"
         android:layout_height="44dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
+        android:focusable="true"
         android:hint="Price"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,9 +68,9 @@
         android:id="@+id/book_title"
         android:layout_width="0dp"
         android:layout_height="51dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Enter book title "
         android:inputType="textPersonName"
@@ -103,27 +105,56 @@
         android:id="@+id/book_image"
         android:layout_width="match_parent"
         android:layout_height="255dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="8dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upload_progress" />
+        app:layout_constraintTop_toBottomOf="@+id/tags_input" />
 
     <ProgressBar
         android:id="@+id/upload_progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
-        android:layout_height="22dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="141dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.972"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/book_price"
-        tools:visibility="gone" />
+        app:layout_constraintTop_toBottomOf="@+id/tags_input" />
+
+    <EditText
+        android:id="@+id/book_description_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Book Description"
+        android:inputType="textMultiLine|textPersonName"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/book_price" />
+
+    <EditText
+        android:id="@+id/tags_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Add comma (,) seperated by Tags"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/book_description_details" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

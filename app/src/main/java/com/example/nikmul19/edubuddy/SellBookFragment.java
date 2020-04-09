@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -37,8 +38,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import static androidx.appcompat.app.AppCompatActivity.RESULT_OK;
@@ -53,7 +56,9 @@ public class SellBookFragment extends Fragment implements View.OnClickListener {
     public static final int MEDIA_TYPE_IMAGE = 1;
     Spinner spinner;
     ImageView bookImage;
-    Button sellBook, captureBookImage;
+    Button sellBook;
+
+    FloatingActionButton captureBookImage;
     String fileStoragePath;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -62,7 +67,7 @@ public class SellBookFragment extends Fragment implements View.OnClickListener {
     public static final int BITMAP_SAMPLE_SIZE = 1;
     public DatabaseReference db, usersDb;
     public FirebaseAuth cAuth;
-    EditText price, title;
+    EditText price, title,bookDescription,tagsInput;
     Uri fileUri;
     ProgressBar uploadProgress;
 
@@ -97,12 +102,14 @@ public class SellBookFragment extends Fragment implements View.OnClickListener {
         sellBook = view.findViewById(R.id.submit_book_btn);
         captureBookImage.setOnClickListener(this);
         sellBook.setOnClickListener(this);
+        bookDescription = view.findViewById(R.id.book_description_details);
         bookImage = view.findViewById(R.id.book_image);
         db = FirebaseDatabase.getInstance().getReference();
         price = view.findViewById(R.id.book_price);
         title = view.findViewById(R.id.book_title);
         uploadProgress = view.findViewById(R.id.upload_progress);
         usersDb = FirebaseDatabase.getInstance().getReference().child("users/");
+        tagsInput = view.findViewById(R.id.tags_input);
 
 
     }
@@ -162,8 +169,14 @@ public class SellBookFragment extends Fragment implements View.OnClickListener {
 
 
     public void uploadBook() {
+
+        String[] tags =  tagsInput.getText().toString().split(",");
+
+        List <String> tagsList = Arrays.asList(tags);
+
         Book book = new Book();
         book.price = this.price.getText().toString();
+        book.description = this.bookDescription.getText().toString();
         String subject = this.spinner.getSelectedItem().toString();
         String title = this.title.getText().toString();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -177,6 +190,9 @@ public class SellBookFragment extends Fragment implements View.OnClickListener {
         book.uploadedBy = FirebaseAuth.getInstance().getCurrentUser().getUid();
         book.subject = subject;
         book.title = title;
+
+        book.tags = tagsList;
+
 
         DatabaseReference bookDbLocation = db.child("books/");
 
@@ -286,8 +302,11 @@ public class SellBookFragment extends Fragment implements View.OnClickListener {
 
 class Book {
 
-    String price, date, time, uploadedBy, subject, title, photoLocation;
+    String price, date, time, uploadedBy, subject, title, photoLocation,description;
     String phoneNo;
+    List<String> tags;
+
+
 
     public String getTitle() {
         return title;
@@ -309,4 +328,9 @@ class Book {
     public String getPhotoLocation() {
         return photoLocation;
     }
+    public String getDescription() {
+        return description;
+    }
+
+    public List<String> getTags(){return tags;}
 }

@@ -173,7 +173,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/book_description"
+                        android:id="@+id/book_description_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="3"
@@ -241,28 +241,11 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/tag_chip_group"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chip4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
-                                android:text="tag3" />
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chip3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
-                                android:text="tag2" />
-
-                            <com.google.android.material.chip.Chip
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
-                                android:text='"hello"' />
                         </com.google.android.material.chip.ChipGroup>
 
                     </LinearLayout>
