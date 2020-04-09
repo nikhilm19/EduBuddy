@@ -88,7 +88,7 @@ public class BookDetailsPage extends AppCompatActivity {
 
 
 
-        ImageView bookImage = findViewById(R.id.bookDetailImage);
+        //ImageView bookImage = findViewById(R.id.bookDetailImage);
         ImageView bookPrevImage = findViewById(R.id.buy_book_image);
 
         final CardView bookCard = findViewById(R.id.book_card);

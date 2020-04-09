@@ -116,15 +116,13 @@ public class DrawerActivity extends AppCompatActivity {
 
                     case R.id.logout_menu:
 
-                        Intent intent = new Intent(DrawerActivity.this,BookDetailsPage.class);
-                        startActivity(intent);
 
-                        /*
+
                         FirebaseAuth.getInstance().signOut();
                         drawerLayout.closeDrawers();
                         DrawerActivity.this.finish();
                         Intent intent= new Intent(DrawerActivity.this,LoginSignUpContainer.class);
-                        startActivity(intent);*/
+                        startActivity(intent);
 
                         break;
 
