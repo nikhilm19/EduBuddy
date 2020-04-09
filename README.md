@@ -22,11 +22,7 @@ Edubuddy lets you:
 ### ✨ [Demo](https://drive.google.com/open?id=1RqKwJ-rMVO0js5TlFMXjxjkNmJweYoi4)
 
 
-## Install
 
-```sh
- 
-```
 
 ## Author
 
